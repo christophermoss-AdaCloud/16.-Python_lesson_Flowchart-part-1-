@@ -1,0 +1,658 @@
+/* ================================
+   Lesson 16 Flowcharts - Styling
+   Author: Suggested by Copilot
+   ================================
+   Design goals:
+   - Friendly, professional educational aesthetic
+   - Accessible color contrast (WCAG AA+ where possible)
+   - Scalable & responsive
+   - Visual emphasis on flowchart learning components
+*/
+
+/* ---------- CSS RESET (minimal) ---------- */
+*,*::before,*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body, h1, h2, h3, h4, h5, h6, p, ul, ol, li, figure {
+  margin: 0;
+  padding: 0;
+}
+
+ul, ol {
+  list-style: none;
+}
+
+/* ---------- ROOT DESIGN TOKENS ---------- */
+:root {
+  --font-sans: "Inter", "Segoe UI", system-ui, -apple-system, Arial, sans-serif;
+  --font-mono: "JetBrains Mono", "Fira Code", "Source Code Pro", monospace;
+
+  --color-bg: #f9fbfd;
+  --color-surface: #ffffff;
+  --color-surface-alt: #f0f5fa;
+  --color-border: #d9e2ec;
+  --color-border-strong: #b9c6d1;
+
+  --color-primary: #2563eb;
+  --color-primary-alt: #1d4ed8;
+  --color-accent: #ec4899;
+  --color-accent-alt: #db2777;
+  --color-success: #10b981;
+  --color-warning: #f59e0b;
+  --color-danger: #dc2626;
+
+  --color-text: #1f2937;
+  --color-text-soft: #4b5563;
+  --color-text-faint: #6b7280;
+  --color-code-bg: #1e293b;
+  --color-focus: #9333ea;
+
+  --radius-xs: 4px;
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --radius-round: 999px;
+
+  --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
+  --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
+  --shadow-lg: 0 8px 24px rgba(0,0,0,0.12);
+
+  --gradient-header: linear-gradient(120deg, #2563eb, #9333ea 65%, #ec4899);
+  --gradient-accent: linear-gradient(135deg, #2563eb, #10b981);
+
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.25rem;
+  --space-6: 1.5rem;
+  --space-7: 2rem;
+  --space-8: 2.5rem;
+  --space-9: 3rem;
+
+  --transition-fast: 120ms;
+  --transition-med: 240ms;
+  --transition-slow: 380ms;
+
+  --max-width-content: 1100px;
+}
+
+/* ---------- DARK MODE ---------- */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-bg: #0f172a;
+    --color-surface: #1e293b;
+    --color-surface-alt: #243554;
+    --color-border: #334862;
+    --color-border-strong: #44607f;
+    --color-text: #f1f5f9;
+    --color-text-soft: #e2e8f0;
+    --color-text-faint: #94a3b8;
+    --shadow-sm: 0 1px 2px rgba(0,0,0,0.4);
+    --shadow-md: 0 4px 12px rgba(0,0,0,0.5);
+    --shadow-lg: 0 8px 28px rgba(0,0,0,0.55);
+  }
+}
+
+/* ---------- GLOBAL BASE STYLES ---------- */
+body {
+  font-family: var(--font-sans);
+  background: var(--color-bg);
+  color: var(--color-text);
+  line-height: 1.5;
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+}
+
+img,
+svg {
+  max-width: 100%;
+  display: block;
+}
+
+a {
+  color: var(--color-primary);
+  text-decoration: none;
+  transition: color var(--transition-fast) ease;
+}
+
+a:hover,
+a:focus-visible {
+  color: var(--color-primary-alt);
+  text-decoration: underline;
+}
+
+:focus-visible {
+  outline: 3px solid var(--color-focus);
+  outline-offset: 2px;
+  border-radius: var(--radius-xs);
+}
+
+/* ---------- HEADER ---------- */
+header {
+  background: var(--gradient-header);
+  color: #fff;
+  padding: var(--space-7) var(--space-4) var(--space-6);
+  position: relative;
+  overflow: hidden;
+}
+
+header::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 80% 20%, rgba(255,255,255,0.15), transparent 60%);
+  pointer-events: none;
+}
+
+.header-content {
+  max-width: var(--max-width-content);
+  margin: 0 auto;
+  text-align: center;
+}
+
+.header-content h1 {
+  font-size: clamp(1.9rem, 4vw, 3rem);
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  margin-bottom: var(--space-3);
+}
+
+.course-info,
+.instructor-info,
+.date-info {
+  font-weight: 500;
+  opacity: 0.95;
+  margin-bottom: var(--space-1);
+}
+
+.date-info {
+  font-size: 0.85rem;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+/* ---------- NAVIGATION ---------- */
+nav {
+  background: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
+  box-shadow: var(--shadow-sm);
+  position: sticky;
+  top: 0;
+  z-index: 20;
+}
+
+nav ul {
+  max-width: var(--max-width-content);
+  margin: 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-4);
+  justify-content: center;
+}
+
+nav a {
+  padding: var(--space-2) var(--space-4);
+  background: var(--color-surface-alt);
+  color: var(--color-text);
+  font-size: 0.9rem;
+  border-radius: var(--radius-round);
+  border: 1px solid var(--color-border);
+  transition: background var(--transition-med), transform var(--transition-fast);
+}
+
+nav a:hover,
+nav a:focus-visible {
+  background: var(--color-primary);
+  color: #fff;
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-sm);
+}
+
+/* ---------- MAIN LAYOUT ---------- */
+main {
+  max-width: var(--max-width-content);
+  margin: 0 auto;
+  padding: var(--space-7) var(--space-4);
+}
+
+.lesson-section {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-6) var(--space-5);
+  margin-bottom: var(--space-7);
+  box-shadow: var(--shadow-sm);
+  position: relative;
+  overflow: hidden;
+}
+
+.lesson-section::before {
+  content: "";
+  position: absolute;
+  top: -40px;
+  right: -40px;
+  width: 140px;
+  height: 140px;
+  background: var(--gradient-accent);
+  opacity: 0.08;
+  filter: blur(12px);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.lesson-section h2 {
+  font-size: clamp(1.3rem, 2.4vw, 2rem);
+  margin-bottom: var(--space-4);
+  font-weight: 650;
+  letter-spacing: -0.5px;
+}
+
+/* ---------- CONTENT BLOCKS ---------- */
+.content-block + .content-block {
+  margin-top: var(--space-6);
+}
+
+.content-block h3 {
+  font-size: 1.15rem;
+  margin-bottom: var(--space-3);
+  font-weight: 600;
+  color: var(--color-primary);
+}
+
+.definition-box {
+  background: var(--color-surface-alt);
+  padding: var(--space-4) var(--space-5);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  font-size: 1.05rem;
+  line-height: 1.6;
+  box-shadow: inset 0 0 0 999px rgba(255,255,255,0.4);
+}
+
+/* ---------- BENEFITS GRID ---------- */
+.benefits-grid {
+  display: grid;
+  gap: var(--space-4);
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  margin-top: var(--space-4);
+}
+
+.benefit-item {
+  background: var(--color-surface-alt);
+  padding: var(--space-4);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  position: relative;
+  overflow: hidden;
+  transition: transform var(--transition-med), box-shadow var(--transition-med);
+}
+
+.benefit-item::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(145deg, rgba(255,255,255,0.35), transparent);
+  opacity: 0;
+  transition: opacity var(--transition-med);
+}
+
+.benefit-item:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-md);
+}
+
+.benefit-item:hover::after {
+  opacity: 1;
+}
+
+.benefit-item h4 {
+  margin-bottom: var(--space-2);
+  font-size: 0.95rem;
+  text-transform: uppercase;
+  letter-spacing: 0.7px;
+  color: var(--color-accent-alt);
+}
+
+/* ---------- SYMBOLS GRID ---------- */
+.symbols-grid {
+  display: grid;
+  gap: var(--space-5);
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  margin-top: var(--space-5);
+}
+
+.symbol-card {
+  background: var(--color-surface-alt);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-5) var(--space-4) var(--space-4);
+  text-align: center;
+  position: relative;
+  transition: box-shadow var(--transition-med), transform var(--transition-fast);
+}
+
+.symbol-card:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-3px);
+}
+
+.symbol {
+  width: 100%;
+  height: 72px;
+  display: grid;
+  place-items: center;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  font-size: 0.9rem;
+  color: #fff;
+  margin-bottom: var(--space-3);
+  position: relative;
+  isolation: isolate;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.4);
+}
+
+.symbol.oval {
+  background: var(--color-primary);
+  border-radius: 50px;
+}
+
+.symbol.rectangle {
+  background: var(--color-success);
+  border-radius: var(--radius-xs);
+}
+
+.symbol.diamond {
+  background: var(--color-warning);
+  transform: rotate(45deg);
+  border-radius: 8px;
+}
+
+.symbol.parallelogram {
+  background: var(--color-accent);
+  transform: skewX(-18deg);
+}
+
+.symbol.arrow {
+  background: var(--color-danger);
+  font-size: 2rem;
+}
+
+/* Keep text upright in transformed shapes */
+.symbol.diamond,
+.symbol.parallelogram {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 0.8rem;
+  padding: 0 10px;
+}
+
+.symbol-card p {
+  font-size: 0.8rem;
+  line-height: 1.35;
+}
+
+/* ---------- FLOWCHART EXAMPLE LIST ---------- */
+.rps-flowchart {
+  background: linear-gradient(145deg, var(--color-surface-alt), var(--color-surface));
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-5) var(--space-5);
+  position: relative;
+  overflow-x: auto;
+}
+
+.flowchart-steps {
+  counter-reset: step-num;
+  font-size: 0.95rem;
+}
+
+.flowchart-steps > li {
+  margin-bottom: var(--space-3);
+  position: relative;
+  padding-left: var(--space-3);
+}
+
+.flowchart-steps > li::before {
+  counter-increment: step-num;
+  content: counter(step-num);
+  position: absolute;
+  left: 0;
+  top: 2px;
+  background: var(--color-primary);
+  color: #fff;
+  width: 22px;
+  height: 22px;
+  display: grid;
+  place-items: center;
+  border-radius: var(--radius-round);
+  font-size: 0.7rem;
+  box-shadow: var(--shadow-sm);
+}
+
+.step-type {
+  display: inline-block;
+  padding: 2px 10px;
+  border-radius: var(--radius-round);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  background: var(--color-primary);
+  color: #fff;
+}
+
+.oval-step { background: var(--color-primary); }
+.para-step { background: var(--color-accent); }
+.diamond-step { background: var(--color-warning); }
+
+/* ---------- TASK SECTION ---------- */
+.task-instructions {
+  background: var(--color-surface-alt);
+  border: 1px dashed var(--color-border-strong);
+  padding: var(--space-5);
+  border-radius: var(--radius-md);
+  margin-bottom: var(--space-5);
+}
+
+.task-instructions p {
+  margin-bottom: var(--space-3);
+}
+
+.tool-link {
+  display: inline-block;
+  background: var(--color-primary);
+  color: #fff;
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-round);
+  font-size: 0.85rem;
+  transition: background var(--transition-med), box-shadow var(--transition-fast);
+}
+
+.tool-link:hover {
+  background: var(--color-primary-alt);
+  box-shadow: var(--shadow-sm);
+}
+
+/* ---------- GAME OPTIONS GRID ---------- */
+.game-options {
+  display: grid;
+  gap: var(--space-5);
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  margin-bottom: var(--space-6);
+}
+
+.game-card {
+  background: var(--color-surface-alt);
+  padding: var(--space-5) var(--space-4);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  position: relative;
+  transition: transform var(--transition-fast), box-shadow var(--transition-med);
+  cursor: pointer;
+}
+
+.game-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(145deg, rgba(255,255,255,0.5), transparent 70%);
+  opacity: 0;
+  transition: opacity var(--transition-med);
+}
+
+.game-card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-md);
+}
+
+.game-card:hover::before {
+  opacity: 1;
+}
+
+.game-card h3 {
+  font-size: 1rem;
+  margin-bottom: var(--space-2);
+  letter-spacing: 0.5px;
+}
+
+.game-card p {
+  font-size: 0.85rem;
+  color: var(--color-text-soft);
+}
+
+/* ---------- TASK LEVELS ---------- */
+.task-levels {
+  display: grid;
+  gap: var(--space-5);
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  margin-bottom: var(--space-6);
+}
+
+.level-card {
+  padding: var(--space-5) var(--space-4);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
+  position: relative;
+  background: var(--color-surface-alt);
+  overflow: hidden;
+}
+
+.level-card h4 {
+  margin-bottom: var(--space-2);
+  font-size: 0.95rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.level-card.basic { border-color: var(--color-primary); }
+.level-card.challenging { border-color: var(--color-warning); }
+.level-card.extension { border-color: var(--color-success); }
+
+.level-card.basic h4 { color: var(--color-primary); }
+.level-card.challenging h4 { color: var(--color-warning); }
+.level-card.extension h4 { color: var(--color-success); }
+
+.submit-reminder {
+  background: var(--gradient-accent);
+  color: #fff;
+  padding: var(--space-5) var(--space-5);
+  border-radius: var(--radius-lg);
+  text-align: center;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  box-shadow: var(--shadow-md);
+  margin-top: var(--space-4);
+}
+
+.submit-reminder strong {
+  display: inline-block;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+}
+
+/* ---------- SUMMARY / PLENARY ---------- */
+.plenary-section,
+.notes-section,
+.closing-message {
+  margin-bottom: var(--space-5);
+}
+
+.notes-section ul {
+  list-style: disc;
+  padding-left: var(--space-5);
+}
+
+.notes-section li {
+  margin-bottom: var(--space-2);
+  font-size: 0.9rem;
+}
+
+/* ---------- FOOTER ---------- */
+footer {
+  background: var(--color-surface);
+  border-top: 1px solid var(--color-border);
+  padding: var(--space-6) var(--space-4);
+  position: relative;
+}
+
+.footer-content {
+  max-width: var(--max-width-content);
+  margin: 0 auto;
+  text-align: center;
+  font-size: 0.75rem;
+  color: var(--color-text-faint);
+  line-height: 1.4;
+}
+
+/* ---------- UTILITIES ---------- */
+.text-center { text-align: center; }
+.mt-0 { margin-top: 0 !important; }
+.mb-0 { margin-bottom: 0 !important; }
+.visually-hidden {
+  position: absolute !important;
+  height: 1px; width: 1px;
+  clip: rect(1px,1px,1px,1px);
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+/* ---------- MEDIA QUERIES ---------- */
+@media (max-width: 760px) {
+  nav ul { justify-content: flex-start; }
+  .lesson-section { padding: var(--space-5) var(--space-4); }
+  header { padding: var(--space-6) var(--space-4) var(--space-5); }
+  .game-card,
+  .benefit-item,
+  .symbol-card { padding: var(--space-4); }
+}
+
+@media (max-width: 520px) {
+  .header-content h1 { font-size: 1.9rem; }
+  nav a { font-size: 0.75rem; padding: var(--space-2) var(--space-3); }
+  .flowchart-steps > li { font-size: 0.82rem; }
+  .submit-reminder { font-size: 0.85rem; }
+}
+
+/* ---------- REDUCED MOTION ---------- */
+@media (prefers-reduced-motion: reduce) {
+  * { animation: none !important; transition: none !important; }
+  nav a:hover { transform: none; }
+  .benefit-item:hover,
+  .game-card:hover,
+  .symbol-card:hover { transform: none; }
+}
+
+/* ---------- PRINT ---------- */
+@media print {
+  nav,
+  .submit-reminder,
+  footer { display: none !important; }
+  body { background: #fff; }
+  .lesson-section { box-shadow: none; border-color: #888; }
+}
